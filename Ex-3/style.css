@@ -1,0 +1,10 @@
+/* External CSS for Overall Wellness paragraph */
+.wellness {
+  background-color: #b3e5fc;
+  padding: 20px;
+  border-radius: 8px;
+  font-family: "Courier New", monospace;
+  font-size: 20px;
+  color: #004d66;
+  line-height: 1.6;
+}
