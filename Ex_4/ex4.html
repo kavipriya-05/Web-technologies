@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Registration</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font: 14px/1.5 system-ui, sans-serif;
+      background: linear-gradient(135deg, #87CEEB, #4682B4);
+      min-height: 100vh;
+      padding: 1rem;
+      color: #2c3e50;
+    }
+    .container {
+      max-width: 700px; margin: 0 auto;
+      background: rgba(255,255,255,0.9);
+      border-radius: 15px; padding: 1.5rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    .header { text-align: center; margin-bottom: 1.5rem; }
+    .header h1 { font-size: 1.8rem; font-weight: 700; color: #4682B4; margin-bottom: 0.5rem; }
+    .section {
+      margin-bottom: 1.5rem; padding: 1rem;
+      background: rgba(135,206,235,0.1);
+      border-radius: 10px; border-left: 3px solid #4682B4;
+    }
+    .section h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #4682B4; }
+    .row { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 1rem; margin-bottom: 1rem; }
+    .field { position: relative; }
+    label { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; }
+    .required::after { content: " *"; color: #e74c3c; }
+    .input {
+      width: 100%; padding: 0.6rem;
+      border: 1px solid #87CEEB; border-radius: 8px;
+      font: inherit; background: white;
+      transition: border-color 0.2s;
+    }
+    .input:focus {
+      outline: none; border-color: #4682B4;
+      box-shadow: 0 0 0 2px rgba(70,130,180,0.2);
+    }
+    .input.error { border-color: #e74c3c; }
+    .input.success { border-color: #27ae60; }
+    .feedback {
+      position: absolute; right: 0.6rem; top: 1.8rem;
+      font-weight: bold; opacity: 0; transition: opacity 0.2s;
+    }
+    .feedback.show { opacity: 1; }
+    .error-msg { color: #e74c3c; font-size: 0.75rem; margin-top: 0.2rem; display: none; }
+    .error-msg.show { display: block; }
+    .options {
+      display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+      gap: 0.5rem; margin-top: 0.3rem;
+    }
+    .option {
+      display: flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem; border: 1px solid #87CEEB;
+      border-radius: 6px; cursor: pointer;
+      background: white; font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+    .option:hover { border-color: #4682B4; background: rgba(70,130,180,0.05); }
+    .btn {
+      background: linear-gradient(135deg,#4682B4,#87CEEB);
+      color: white; padding: 0.8rem 1.5rem;
+      border: none; border-radius: 25px;
+      font: inherit; font-weight: 600;
+      cursor: pointer; transition: transform 0.2s;
+      width: 100%; margin-top: 1rem;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .message {
+      padding: 0.8rem; border-radius: 8px; margin-bottom: 1rem;
+      text-align: center; font-weight: 600;
+    }
+    .message.success { background: #27ae60; color: white; }
+    .message.error { background: #e74c3c; color: white; }
+    .help { font-size: 0.7rem; color: #7f8c8d; margin-top: 0.2rem; }
+    @media (max-width: 600px) {
+      .container { padding: 1rem; }
+      .row, .options { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🌟 Health Registration</h1>
+      <p>Mental & Physical Wellness Center</p>
+    </div>
+
+    <form id="form" novalidate>
+      <div class="section">
+        <h2>👤 Personal Information</h2>
+        <div class="row">
+          <div class="field">
+            <label for="firstName" class="required">First Name</label>
+            <input type="text" id="firstName" class="input" required>
+            <div class="feedback" id="firstName-feedback"></div>
+            <div class="error-msg" id="firstName-error"></div>
+          </div>
+          <div class="field">
+            <label for="lastName" class="required">Last Name</label>
+            <input type="text" id="lastName" class="input" required>
+            <div class="feedback" id="lastName-feedback"></div>
+            <div class="error-msg" id="lastName-error"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="email" class="required">Email</label>
+            <input type="email" id="email" class="input" required>
+            <div class="feedback" id="email-feedback"></div>
+            <div class="error-msg" id="email-error"></div>
+          </div>
+          <div class="field">
+            <label for="phone" class="required">Phone</label>
+            <input type="tel" id="phone" class="input" placeholder="1234567890" required>
+            <div class="feedback" id="phone-feedback"></div>
+            <div class="error-msg" id="phone-error"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="age" class="required">Age</label>
+            <input type="number" id="age" class="input" min="13" max="150" required>
+            <div class="feedback" id="age-feedback"></div>
+            <div class="error-msg" id="age-error"></div>
+            <div class="help">Minimum age: 13 years</div>
+          </div>
+          <div class="field">
+            <label class="required">Gender</label>
+            <div class="options">
+              <label class="option"><input type="radio" name="gender" value="male" required> Male</label>
+              <label class="option"><input type="radio" name="gender" value="female" required> Female</label>
+              <label class="option"><input type="radio" name="gender" value="other" required> Other</label>
+            </div>
+            <div class="error-msg" id="gender-error"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🧠 Mental Health</h2>
+        <div class="field">
+          <label>Mental Health Concerns</label>
+          <div class="options">
+            <label class="option"><input type="checkbox" name="mental" value="anxiety"> Anxiety</label>
+            <label class="option"><input type="checkbox" name="mental" value="depression"> Depression</label>
+            <label class="option"><input type="checkbox" name="mental" value="ptsd"> PTSD/Trauma</label>
+            <label class="option"><input type="checkbox" name="mental" value="addiction"> Addiction</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>💪 Physical Health</h2>
+        <div class="row">
+          <div class="field">
+            <label for="weight" class="required">Weight (kg)</label>
+            <input type="number" id="weight" class="input" min="20" max="500" step="0.1" required>
+            <div class="feedback" id="weight-feedback"></div>
+            <div class="error-msg" id="weight-error"></div>
+          </div>
+          <div class="field">
+            <label for="height" class="required">Height (cm)</label>
+            <input type="number" id="height" class="input" min="100" max="250" required>
+            <div class="feedback" id="height-feedback"></div>
+            <div class="error-msg" id="height-error"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Physical Conditions</label>
+          <div class="options">
+            <label class="option"><input type="checkbox" name="physical" value="diabetes"> Diabetes</label>
+            <label class="option"><input type="checkbox" name="physical" value="hypertension"> High Blood Pressure</label>
+            <label class="option"><input type="checkbox" name="physical" value="heart"> Heart Disease</label>
+            <label class="option"><input type="checkbox" name="physical" value="pain"> Chronic Pain</label>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn">Begin Healing Journey 🌟</button>
+    </form>
+  </div>
+
+  <script>
+    const rules = {
+      firstName: [/^[A-Za-z\s]{2,50}$/, 'Must be 2-50 letters'],
+      lastName:  [/^[A-Za-z\s]{2,50}$/, 'Must be 2-50 letters'],
+      email:     [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email'],
+      phone:     [/^\d{10}$/, 'Enter 10 digits'],
+      age:       [v => v >= 13 && v <= 150, 'Age 13-150 required'],
+      weight:    [v => v >= 20 && v <= 500, 'Weight 20-500 kg'],
+      height:    [v => v >= 100 && v <= 250, 'Height 100-250 cm'],
+    };
+
+    function validate(field) {
+      const rule = rules[field.id];
+      if (!rule) return true;
+      const [test, message] = rule;
+      const rawValue = field.value.trim();
+      const isValid = typeof test === "function" ? test(+rawValue) : test.test(rawValue);
+      showResult(field, isValid, message);
+      return isValid;
+    }
+
+    function showResult(field, isValid, message) {
+      const feedback = document.getElementById(`${field.id}-feedback`);
+      const error = document.getElementById(`${field.id}-error`);
+      field.classList.remove('error','success');
+      feedback.classList.remove('show');
+      error.classList.remove('show');
+
+      if (field.value) {
+        field.classList.add(isValid ? 'success':'error');
+        feedback.textContent = isValid ? '✓':'✗';
+        feedback.style.color = isValid ? '#27ae60':'#e74c3c';
+        feedback.classList.add('show');
+        if (!isValid) {
+          error.textContent = message;
+          error.classList.add('show');
+        }
+      }
+    }
+
+    function showMessage(type, text) {
+      document.querySelector('.message')?.remove();
+      const msg = Object.assign(document.createElement('div'), {
+        className:`message ${type}`, textContent:text
+      });
+      document.getElementById('form').prepend(msg);
+      setTimeout(()=>msg.remove(),3000);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('form');
+      form.addEventListener('input', e => {
+        if (rules[e.target.id]) setTimeout(()=>validate(e.target),200);
+      });
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        let valid = Object.keys(rules).every(id => validate(document.getElementById(id)));
+
+        if (!document.querySelector('input[name="gender"]:checked')) {
+          document.getElementById('gender-error').textContent = 'Select gender';
+          document.getElementById('gender-error').classList.add('show');
+          valid = false;
+        } else {
+          document.getElementById('gender-error').classList.remove('show');
+        }
+
+        showMessage(valid ? 'success':'error', valid ? '🌟 Registration Successful!' : '❌ Complete required fields');
+        if (valid) console.log('Form submitted successfully');
+      });
+    });
+  </script>
+</body>
+</html>
